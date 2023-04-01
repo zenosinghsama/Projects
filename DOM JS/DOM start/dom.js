@@ -8,8 +8,16 @@ console.log(items);
 console.log(items[1]);
 
 
+
 var header2 = document.getElementsByClassName('title');
 for(let i = 0; i < header2.length; i++){
     header2[i].style.fontWeight = 'bold';
     header2[i].style.color = 'green';
+}
+
+var li = document.getElementsByTagName('li');
+li[2].style.backgroundColor = 'green';
+
+for(let i = 0; i < li.length; i++) {
+    li[i].style.fontWeight = 'bold';
 }
