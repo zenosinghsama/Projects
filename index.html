@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        
+        #form-wrapper{
+            border: 1px solid orange;
+            padding: 7px;
+            width: 40%;
+            margin: 0 auto;
+            box-sizing: border-box;
+        }
+
+        form{
+            display: flex;
+            flex-direction: column;
+            align-items: left;
+        }
+
+        input, select {
+           margin-top: -1px;
+           
+}
+
+        input[type="submit"] {
+            background-color: darkorange;
+            color: white;
+            font-size: 18px;
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+        }
+
+        h2{
+            color:orange;
+            text-align: center;
+            margin: 0;
+        }
+        h5{
+            text-align: center;
+            position: relative;
+        }
+
+        h5::after {
+            content: "";
+            width: 100%;
+            height: 2px;
+            background-color: gray;
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+        }
+
+        body{
+            background-image: url("https://previews.123rf.com/images/vska/vska1302/vska130200010/17749340-abstract-light-cube-computer-technology-business-background.jpg");
+        }
+        
+    </style>
+</head>
+<body>
+    <div id="form-wrapper">
+        <br/>
+    <h2>Book a call</h2>
+    <h5>Book a call slot and our representative will call you within 1hr of selected time</h5>
+
+    <form action ="#" onsubmit="onsignup(event)">
+        <label>Name:</label>
+        <br/>
+        <input type="text" name="username" required style="width:100%; height: 25px;"/>
+        <br/>
+        <label>Email:</label>
+        <br/>
+        <input type="email" name="email" required style="width:100%; height: 25px;"/>
+        <br/>
+        <label>Phone:</label>
+        <br/>
+        <input type="phonenumber" name="phone" required style="width:100%; height: 25px;"/>
+        <br/>
+        <label for="time">Time for Call:</label>
+        <div style="display: flex; flex-wrap: wrap;">
+            <div style="flex:1; margin-right: 10px;">
+                <input type="date" name="date" required style="margin-bottom: 20px; width: 100%; height: 25px;">
+            </div>
+            <div style="flex:1;">
+                <select id="time" name="time" style="width: 101%; height: 30px;">
+                    <option value="morning">9am-12pm</option>
+                    <option value="afternoon">12pm-3pm</option>
+                    <option value="evening">3pm-6pm</option>
+                </select>
+                <br/>
+            </div>
+        </div>
+        
+       <input type="submit" value="GET A CALL" style=width:100%;  ></form></div>
+
+    </form>
+    </div>
+    </body>
+</body>
+</html>
