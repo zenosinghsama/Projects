@@ -1,4 +1,4 @@
-var headerTitle = document.getElementById('header-title');
+/* var headerTitle = document.getElementById('header-title');
 var header = document.getElementById('main-header');
 header.style.borderBottom = 'solid 3px #000';
 
@@ -20,4 +20,7 @@ li[2].style.backgroundColor = 'green';
 
 for(let i = 0; i < li.length; i++) {
     li[i].style.fontWeight = 'bold';
-}
+} */
+
+var item5 = document.getElementsByClassName('list-group') ;
+item5[0].style.backgroundColor = 'lightblue';
