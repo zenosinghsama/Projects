@@ -10,29 +10,62 @@
     <title>Item Lister</title>
     </head>
     <body>
-    <header id="main-header" class="bg-success text-white p-4 mb-3">
-    <div class=" container">
-     <h1 id="header-title">Item Lister</h1>
-    </div> 
-    </header>
-    <div class=" container">
-      <div id="main" class="card card-body">
-         <h2 class="title">Add Items</h2>
-         <form class=" form-inline mb-3">
-            <input type="text" class=" form-control mr-2">
-            <input type="submit" class="btn btn-danger" value="Submit">
-    </form> 
-    <h2 class="title">Items</h2> 
-    <ul id="items" class="list-group">
-        <li class="list-group-item">Item 1</li>
-        <li class="list-group-item">Item 2</li>
-        <li class="list-group-item">Item 3</li>
-        <li class="list-group-item">Item 4</li>
-       <!--  <li>Item 5</li> -->
-     </ul>
-    </div>
-    </div>
+      <header id="main-header" class="bg-success text-white p-4 mb-3">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-6">
+                <h1 id="header-title">Item Lister</h1>
+            </div>
+            <div class="col-md-6 align-self-center">
+                <input type="text" class="form-control" id="filter" placeholder="Search Items...">
+            </div>
+          </div>
+        </div>
+      </header>
+      <div class="container">
+       <div id="main" class="card card-body">
+        <h2 class="title">Add Items</h2>
+        <form id="addForm" class="form-inline mb-3">
+          <input type="text" class="form-control mr-2" id="item">
+          <input type="submit" class="btn btn-dark" value="Submit">
+        </form>
+        <h2 class="title">Items</h2>
+        <ul id="items" class="list-group">
+          <li style="display: flex; flex-direction: row; width: 100%;"  class="list-group-item">
+            <span style="width: 90%;">Item 1 </span>
+            <div style="display: flex; flex-direction: row; width: 10%; ">
+              <button class="btn btn-danger btn-sm float-right delete">X</button>
+              <button style ='margin-left: 2%;'class="btn btn-primary btn-sm float-right ">Edit</button>
+            </div>
+            
+          </li>
+          <li style="display: flex; flex-direction: row; width: 100%;"  class="list-group-item">
+            <span style="width: 90%;">Item 2 </span>
+            <div style="display: flex; flex-direction: row; width: 10%; ">
+              <button class="btn btn-danger btn-sm float-right delete">X</button>
+              <button style ='margin-left: 2%;'class="btn btn-primary btn-sm float-right ">Edit</button>
+            </div>
+            
+          </li>
+          <li style="display: flex; flex-direction: row; width: 100%;"  class="list-group-item">
+            <span style="width: 90%;">Item 3 </span>
+            <div style="display: flex; flex-direction: row; width: 10%; ">
+              <button class="btn btn-danger btn-sm float-right delete">X</button>
+              <button style ='margin-left: 2%;'class="btn btn-primary btn-sm float-right ">Edit</button>
+            </div>
+            
+          </li>
+          <li style="display: flex; flex-direction: row; width: 100%;"  class="list-group-item">
+            <span style="width: 90%;">Item 4 </span>
+            <div style="display: flex; flex-direction: row; width: 10%; ">
+              <button class="btn btn-danger btn-sm float-right delete">X</button>
+              <button style ='margin-left: 2%;'class="btn btn-primary btn-sm float-right ">Edit</button>
+            </div>
+          </li>
+        </ul>
+       </div>
+      </div>
 
     <script src="dom.js"></script>
     </body>
-     </html>
+    </html>
