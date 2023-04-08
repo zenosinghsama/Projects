@@ -31,10 +31,36 @@ function handleSubmit(e) {
             date: document.getElementById('date').value,
             time: document.getElementById('time').value
         };
-
         parsed.push(obj);
 
-        let arr = JSON.stringify(parsed);
-        localStorage.setItem('details', arr);
+        let NewARR = JSON.stringify(parsed);
+        localStorage.setItem('details', NewARR);
     }
 }
+
+
+
+let display = localStorage.getItem('details')
+display = JSON.parse(display)
+
+var getdisplay = document.getElementById('displayui')
+
+let list = document.createElement('ul')
+for(let i = 0; i < display.length; i++) {
+    let LI = document.createElement('li')
+    LI.innerHTML = `${display[i].name} ${display[i].email} ${display[i].phonenumber} ${display[i].button}`
+    let button = document.createElement('button')
+    button.innerHTML = "Delete";
+        button.addEventListener("click", function() {
+            var index = i;
+            display.splice(index, 1);
+       
+            let arr = JSON.stringify(display);
+            localStorage.setItem('details', arr);
+       
+            list.removeChild(LI);
+       });
+       LI.appendChild(button);
+    list.appendChild(LI);
+}
+getdisplay.appendChild(list);
