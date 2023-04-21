@@ -108,3 +108,6 @@ for(let i = 0; i < display.length; i++) {
     list.appendChild(LI);
 }
 getdisplay.appendChild(list);
+
+
+

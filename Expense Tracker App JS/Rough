@@ -1,0 +1,96 @@
+var flag = 0;
+var filteredObj;
+function AddExpense(e) {
+
+    if(flag === 0) {
+    var array = [];
+    var existing = localStorage.getItem('details')
+
+    if(existing === null) {
+        var obj = {
+            amount: document.getElementById('amount').value,
+            description: document.getElementById('description').value,
+            category: document.getElementById('category').value
+        };
+
+        array.push(obj);
+
+        let arr = JSON.stringify(array);
+        localStorage.setItem('details', arr);
+    } else {
+        let parsed = JSON.parse(existing);
+        var obj = {
+            amount: document.getElementById('amount').value,
+            description: document.getElementById('description').value,
+            category: document.getElementById('category').value
+        };
+
+        parsed.push(obj);
+        
+        let NewARR = JSON.stringify(parsed);
+        localStorage.setItem('details', NewARR);
+        }
+    }  else if (flag === 1) {
+        let display = JSON.parse(localStorage.getItem('details'));
+
+        if(display != null){
+        for(var i = 0; i < display.length; i++) {
+            if(display[i].Amount === filteredObj.Amount) {
+                display[i].Amount = document.getElementById('amount').value
+                display[i].Description = document.getElementById('description').value
+                display[i].Category = document.getElementById('category').value
+            }
+        }
+
+        let NewARR = JSON.stringify(display);
+        localStorage.setItem('details', NewARR);
+        flag = 0;
+    } 
+    }
+    window.location.reload();
+}
+
+let display = localStorage.getItem('details')
+display = JSON.parse(display)
+
+var getdisplay = document.getElementById('displayui')
+
+let list = document.createElement('ul')
+for(let i = 0; i < display.length; i++) {
+    let LI = document.createElement('li')
+    LI.innerHTML = `${display[i].Amount} - ${display[i].Description} - ${display[i].Category}`
+    let button = document.createElement('button')
+    button.innerHTML = 'Delete';
+        button.addEventListener("click", function() {
+            var index = i;
+            display.splice(index, 1);
+
+            let arr = JSON.stringify(display);
+            localStorage.setItem('details', arr);
+
+            list.removeChild(LI);
+        });
+
+        let editBtn = document.createElement('button')
+        editBtn.innerHTML = 'Edit';
+        editBtn.addEventListener('click', function (e){
+            let amount = e.target.previousSibling.textContent.split("-")[0]
+            
+
+            filteredObj=display.filter((ele,idx)=>{
+                return ele.Amount === amount
+            })
+
+            filteredObj = filteredObj[0]
+            document.getElementById('name').value=filteredObj.Amount
+            document.getElementById('description').value = filteredObj.Description
+            document.getElementById('category').value = filteredObj.Category
+
+            flag = 1;
+        });
+
+        LI.appendChild(editBtn);
+        LI.appendChild(button);
+        list.appendChild(LI);
+}
+getdisplay.appendChild(list);
