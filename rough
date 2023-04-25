@@ -1,0 +1,58 @@
+
+
+ const posts = []
+ 
+ function createPost() {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            posts.push({title : 'New Post'})
+            resolve()
+        }, 1000)
+    })
+ }
+ function updateLastUserActivityTime() {
+    return new Promise((resolve, reject) => {
+        setTimeout( () => {
+            const date = new Date()
+            console.log(`Last Activity Time : ${date}`)
+            resolve();
+        }, 1000)
+    });
+ }
+
+ function deletePosts() {
+    return new Promise((resolve, reject) => {
+        if(posts.length > 0) {
+            const popped = posts.pop();
+            resolve(popped);
+        } else {
+            reject("ERROR")
+        }
+    })
+ }
+
+ createPost('POST 1')
+ .then(() => {
+    return updateLastUserActivityTime();
+ })
+ .then(() => {
+    return createPost("POST 2")
+ })
+
+ .then(() => {
+    return updateLastUserActivityTime();
+ })
+
+ .then(() => {
+    console.log(posts);
+    return deletePosts();
+ })
+
+ .then(() => {
+    console.log(posts);
+ })
+
+ .catch((err) => {
+    console.log(err);
+ })
+ 
