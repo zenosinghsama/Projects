@@ -1,7 +1,7 @@
 var flag = 0;
 var filteredObj;
 function handleSubmit(e) {
-    // e.preventDefault()
+    //e.preventDefault()
     // localStorage.setItem('name', document.getElementById('name').value)
     // localStorage.setItem('email', document.getElementById('email').value)
     // localStorage.setItem('phonenumber', document.getElementById('phonenumber').value)
@@ -26,6 +26,16 @@ function handleSubmit(e) {
 
         let arr = JSON.stringify(array);
         localStorage.setItem('details', arr);
+
+        // Send Data
+        axios.post("https://crudcrud.com/api/3ef6a9ed601e42599dcb666e65305977/appointmentdata", obj)
+        .then(response => {
+            console.log(response.data);
+        })
+        .catch(err => {
+            console.log(err);
+        })
+
     } else {
         let parsed = JSON.parse(existing);
         var obj = {
@@ -39,6 +49,14 @@ function handleSubmit(e) {
 
         let NewARR = JSON.stringify(parsed);
         localStorage.setItem('details', NewARR);
+
+        axios.post("https://crudcrud.com/api/3ef6a9ed601e42599dcb666e65305977/appointmentdata", obj)
+          .then(response => {
+            console.log('Data sent to server:', response.data);
+          })
+          .catch(error => {
+            console.log('Error while sending data to server:', error);
+          });
     }
     } else if (flag === 1) {
         for(var i=0;i<display.length;i++){
