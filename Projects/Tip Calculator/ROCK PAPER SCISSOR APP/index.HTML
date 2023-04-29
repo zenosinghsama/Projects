@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ROCK PAPER SCISSOR LIZARD SPOCK</title>
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <h1 class="heading">ROCK PAPER SCISSOR LIZARD SPOCK</h1>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="buttons">
+            <button class="rpsls" title="Rock" value="Rock" onclick="onClickRPS()">🪨</button>
+            <button class="rpsls" title="Paper" value="Paper" onclick="onClickRPS()">📃</button>
+            <button class="rpsls" title="Scissor" value="Scissor" onclick="onClickRPS()">✂️</button>
+            <button class="rpsls" title="Lizard" value="Lizard" onclick="onClickRPS()">🦎</button>
+            <button class="rpsls" title="Spock" value="Spock" onclick="onClickRPS()">🖖🏿</button>
+        </div>
+        <div class="resultContainer">
+            <div id="playerScore"></div>
+            <div id="hands"></div>
+            <div id="result"></div>
+            <button id="endgame" title="endgame" onclick="endGame()">😡</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

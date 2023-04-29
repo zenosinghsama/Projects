@@ -1,0 +1,46 @@
+.heading{
+    text-align: center;
+    background: lavenderblush;
+    border: 2px solid black;
+    border-radius: 1rem;
+    padding: 1px;
+    margin:0 auto;
+    margin-top: 1rem;
+}
+
+body{
+    background: lavender;
+}
+
+.wrapper{
+    height: 700px;
+    width: 700px;
+    color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: blanchedalmond;
+    border-radius: 1rem;
+    padding: 1.2rem;
+    margin: 100px auto;
+    flex-direction: column;
+}
+
+.buttons{
+    display: flex;
+    gap: 20px;
+}
+
+button {
+    height: 100px;
+    width: 100px;
+    font-size: 50px;
+    border-radius: 1rem;
+    cursor: pointer
+}
+
+.resultContainer {
+    font-size: 2rem;
+    text-align: center;
+    margin-top: 50px;
+}
