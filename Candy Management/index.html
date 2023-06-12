@@ -41,10 +41,10 @@
                 quantity
             };
 
-            axios.post("https://crudcrud.com/api/b03df9b7623643689b75ab24d5544887/Candies", obj)
+            axios.post("https://crudcrud.com/api/7527f9c1ec79425eb6d3a7da95774762/Candies", obj)
                 .then((response) => {
                     console.log(response);
-                    showCandyonScreen(obj);
+                    showCandyonScreen(response.data);
                 })
                 .catch((err) => {
                     console.log(err);
@@ -54,13 +54,12 @@
         }
 
         window.addEventListener("DOMContentLoaded", () => {
-            axios.get("https://crudcrud.com/api/b03df9b7623643689b75ab24d5544887/Candies")
+            axios.get("https://crudcrud.com/api/7527f9c1ec79425eb6d3a7da95774762/Candies")
                 .then((response) => {
                     console.log(response)
-                    var candyID = response.data._id;
 
-                    for (var i = 0; i < response.data.length; i++) {
-                        showCandyonScreen(response.data[i]);
+                    for (const candy of response.data) {
+                        showCandyonScreen(candy);
                     }
                 })
                 .catch((error) => {
@@ -78,36 +77,29 @@
             const buy2 = document.createElement("button");
             const buy3 = document.createElement("button");
 
-            name.innerHTML = candy.name;
-            description.innerHTML = candy.description;
-            price.innerHTML = "₹" + candy.price;
-            quantity.innerHTML = candy.quantity;
-            buy1.innerHTML = "BUY 1";
-            buy2.innerHTML = "BUY 2";
-            buy3.innerHTML = "BUY 3";
+            name.textContent = candy.name;
+            description.textContent = candy.description;
+            price.textContent = "₹" + candy.price;
+            quantity.textContent = candy.quantity;
+            buy1.textContent = "BUY 1";
+            buy2.textContent = "BUY 2";
+            buy3.textContent = "BUY 3";
 
             buy1.addEventListener("click", () => {
                 if (candy.quantity >= 1) {
                     candy.quantity -= 1;
-                    quantity.innerHTML = candy.quantity;
+                    quantity.textContent = candy.quantity;
 
                     axios
                         .put(
-                            `https://crudcrud.com/api/dc4e769df8214e718f0362915a06362d/Candies/${candy._id}`,
-                            { quantity: candy.quantity }
-                        )
+                            `https://crudcrud.com/api/7527f9c1ec79425eb6d3a7da95774762/Candies/${candy._id}`, {
+                            name: candy.name,
+                            description: candy.description,
+                            price: candy.price,
+                            quantity: candy.quantity
+                        })
                         .then((response) => {
-                            axios
-                                .get(
-                                    `https://crudcrud.com/api/dc4e769df8214e718f0362915a06362d/Candies/${candy._id}s`
-                                )
-                                .then((response) => {
-                                    candy = response.data;
-                                    quantity.innerHTML = candy.quantity;
-                                })
-                                .catch((error) => {
-                                    console.log(error);
-                                });
+                            quantity.textContent = response.data.quantity;
                         })
                         .catch((error) => {
                             console.log(error);
@@ -118,25 +110,20 @@
             buy2.addEventListener("click", () => {
                 if (candy.quantity >= 2) {
                     candy.quantity -= 2;
-                    quantity.innerHTML = candy.quantity;
+                    quantity.textContent = candy.quantity;
 
                     axios
                         .put(
-                            `https://crudcrud.com/api/7f0483fd3cb04e6ca5350f2fa0ec57ef/Candies/${candy._id}`,
-                            { quantity: candy.quantity }
+                            `https://crudcrud.com/api/7527f9c1ec79425eb6d3a7da95774762/Candies/${candy._id}`,
+                            {
+                                name: candy.name,
+                                description: candy.description,
+                                price: candy.price,
+                                quantity: candy.quantity
+                            }
                         )
                         .then((response) => {
-                            axios
-                                .get(
-                                    `https://crudcrud.com/api//Candies/${candy._id}s`
-                                )
-                                .then((response) => {
-                                    candy = response.data;
-                                    quantity.innerHTML = candy.quantity;
-                                })
-                                .catch((error) => {
-                                    console.log(error);
-                                });
+                            quantity.textContent = response.data.quantity;
                         })
                         .catch((error) => {
                             console.log(error);
@@ -152,21 +139,16 @@
 
                     axios
                         .put(
-                            `https://crudcrud.com/api/dc4e769df8214e718f0362915a06362d/Candies/${candy._id}`,
-                            { quantity: candy.quantity }
+                            `https://crudcrud.com/api/7527f9c1ec79425eb6d3a7da95774762/Candies/${candy._id}`,
+                            {
+                                name: candy.name,
+                                description: candy.description,
+                                price: candy.price,
+                                quantity: candy.quantity
+                            }
                         )
                         .then((response) => {
-                            axios
-                                .get(
-                                    `https://crudcrud.com/api/dc4e769df8214e718f0362915a06362d/Candies/${candy._id}s`
-                                )
-                                .then((response) => {
-                                    candy = response.data;
-                                    quantity.innerHTML = candy.quantity;
-                                })
-                                .catch((error) => {
-                                    console.log(error);
-                                });
+                            quantity.textContent = response.data.quantity;
                         })
                         .catch((error) => {
                             console.log(error);
@@ -178,13 +160,13 @@
 
 
             li.appendChild(name);
-            name.innerHTML += " - "
+            name.textContent += " - "
             li.appendChild(description);
-            description.innerHTML += " - "
+            description.textContent += " - "
             li.appendChild(price);
-            price.innerHTML += " - "
+            price.textContent += " - "
             li.appendChild(quantity);
-            quantity.innerHTML += "  "
+            quantity.textContent += "  "
             li.appendChild(buy1);
             li.appendChild(buy2);
             li.appendChild(buy3);

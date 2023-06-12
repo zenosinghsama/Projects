@@ -2,13 +2,19 @@
   margin-top: 20px;
 }
 
-input[type="number"], input[type="text"], select {
+input[type="number"],
+input[type="text"],
+select {
   display: inline-block;
   width: 200px;
   margin-right: 10px;
 }
 
-.btn{
+ul{
+  list-style-type: circle;
+}
+
+.btn {
   background-color: black;
   color: white;
   margin-bottom: 10px;
@@ -19,12 +25,7 @@ button {
 }
 
 #displayui {
-  margin-left: 15%; 
+  margin-left: 15%;
   margin-top: 1px;
 }
-
-..delete-btn {
-  margin-left: 10px; /* Change the value as per your requirement */
-}
-
 

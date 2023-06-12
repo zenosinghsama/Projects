@@ -7,11 +7,10 @@ function AddExpense() {
     const expense = { amount, description, category };
     expenses.push(expense);
     localStorage.setItem('expenses', JSON.stringify(expenses));
-    displayExpenses();   
+    displayExpenses();
     document.getElementById('amount').value = '';
     document.getElementById('description').value = '';
     document.getElementById('category').value = '';
- 
 }
 
 
@@ -34,30 +33,63 @@ function editExpense(index) {
 function displayExpenses() {
     const display = document.getElementById('displayui');
     display.innerHTML = '';
+
     const expensesData = localStorage.getItem('expenses');
     if (expensesData) {
         expenses = JSON.parse(expensesData);
-        const list = document.createElement('ul');
-        for (let i = 0; i < expenses.length; i++) {
-            const expense = expenses[i];
+
+        const categories = ['food', 'bills', 'entertainment', 'transportation', 'miscellaneous'];
+        const categoryLists = {};
+
+        categories.forEach((category) => {
+            categoryLists[category] = document.createElement('ul');
+            const heading = document.createElement('h3');
+            heading.innerHTML = category.charAt(0).toUpperCase() + category.slice(1); // Capitalize category name
+            categoryLists[category].appendChild(heading);
+        });
+
+        expenses.forEach((expense, index) => {
+            const { amount, description, category } = expense;
+
             const li = document.createElement('li');
-            li.innerHTML = `${expense.amount} - ${expense.description} - ${expense.category}`;
+           // const expenseNumber = index + 1
+            li.innerHTML = ` ${amount} - ${description}  `;
+
+
             const deleteBtn = document.createElement('button');
             deleteBtn.innerHTML = 'Delete Expense';
-            deleteBtn.addEventListener('click', function() {
-                deleteExpense(i);
+            deleteBtn.style.backgroundColor = 'red'; // Set background color
+            deleteBtn.style.color = 'white'; // Set text color
+            deleteBtn.style.border = 'none'; // Remove border
+            deleteBtn.style.padding = '5px 10px'; // Adjust padding
+            deleteBtn.addEventListener('click', function () {
+                deleteExpense(index);
             });
             const editBtn = document.createElement('button');
             editBtn.innerHTML = 'Edit Expense';
-            editBtn.addEventListener('click', function() {
-                editExpense(i);
+            editBtn.style.backgroundColor = 'green'; // Set background color
+            editBtn.style.color = 'white'; // Set text color
+            editBtn.style.border = 'none'; // Remove border
+            editBtn.style.padding = '5px 10px'; // Adjust padding
+            editBtn.addEventListener('click', function () {
+                editExpense(index);
             });
+
             li.appendChild(editBtn);
-            li.appendChild(deleteBtn);
-            list.appendChild(li);
-        }
-        display.appendChild(list);
+            li.appendChild(deleteBtn)
+
+            categoryLists[category].appendChild(li);
+        });
+
+        categories.forEach((category) => {
+            display.appendChild(categoryLists[category]);
+        });
+        // list.appendChild(li);
     }
+    //display.appendChild(list);
+
 }
+
+
 
 displayExpenses();
