@@ -1,9 +1,9 @@
-const http = require('http');
 const fs = require('fs');
 
-const server = http.createServer((req, res) => {
+const requestHandler = (req, res) => {
     const url = req.url;
     const method = req.method;
+   
     if (url === '/') {
 
         fs.readFile('message.txt', { encoding: "utf-8" }, (err, data) => {
@@ -27,7 +27,7 @@ const server = http.createServer((req, res) => {
             console.log(chunk);
             body.push(chunk);
         });
-
+    
         return req.on('end', () => {
             const parsedBody = Buffer.concat(body).toString();
             const message = parsedBody.split('=')[1];
@@ -48,8 +48,18 @@ const server = http.createServer((req, res) => {
         res.write('<body><h1>Hello from my Node.js Server!</h1></body>');
         res.write('</html>');
         res.end();
-    }
+    }  
+};
 
-});
+//Exporting // Method 1
+module.exports = requestHandler;
 
-server.listen(3000);
+// Method 2 : many things
+// module.exports = {
+//     handler: requestHandler,
+//     someText : 'Some Hard Coded Text'
+// }
+ 
+// Method 3 : Shortcut
+// exports.handler = requestHandler;
+// exports.someText = 'ThankYou!';
