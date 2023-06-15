@@ -1,0 +1,16 @@
+{
+  "name": "node-projects",
+  "version": "1.0.0",
+  "description": "Node Projects",
+  "main": "demo.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon demo.js",
+    "start-server": "node demo.js"
+  },
+  "author": "\"Arjun Singh\"",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}
