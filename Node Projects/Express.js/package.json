@@ -9,5 +9,8 @@
     "start-server": "node app.js"
   },
   "author": "Arjun Singh",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.2"
+  }
 }
