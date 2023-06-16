@@ -1,31 +1,18 @@
+const path = require('path');
+
 const express = require('express');
-const fs = require('fs');
+
+//const rootDir = require('../util/path')
 
 const router = express.Router();
 
 router.get('/login', (req, res, next) => {
-    res.send(`
-    <form action = "/login" method = "POST">
-    <input type = "text" name = "username" placeholder = "Enter Username">
-    <button type = "submit"> Login </button>
-    </form>`);
+    res.sendFile(path.join(__dirname, 'views', 'login.html'));    
 });
 
 router.post('/login', (req, res, next) => {
-    const username = req.body.username;
-    
-    fs.writeFile('username.txt', username, (err) => {
-        if(err) {
-            console.log(err);
-        } else {
-            res.send(`
-    <script>
-        localStorage.setItem('username', '${username}');
-        window.location.href = '/';
-    </script>
-    `);
-        }
-    });
+    res.redirect('/');
+
 });
 
 module.exports = router;
