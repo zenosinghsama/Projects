@@ -4,6 +4,8 @@ const express = require('express');
 
 //const rootDir = require('../util/path')
 
+const loginController = require('../controllers/login');
+
 const router = express.Router();
 
 router.get('/login', (req, res, next) => {
@@ -16,3 +18,4 @@ router.post('/login', (req, res, next) => {
 });
 
 module.exports = router;
+
