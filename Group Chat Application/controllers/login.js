@@ -1,4 +1,4 @@
-cosnt login =[];
+const Login = require('../Models/login')
 
 exports.loginPage = (req, res, next) => {
     res.render('login', {
@@ -11,6 +11,20 @@ exports.loginPage = (req, res, next) => {
 }
 
 exports.postLogin = (req, res, next) => {
-    login.push({title: req.body.title});
+    const login = new Login(req.body.title);
+    login.save();
     res.redirecct('/');
 }
+
+exports.getLoginInfo = (req, res, next) => {
+    Login.fetchAll((loginInfo) => {
+        res.render('chat', {
+            prods: loginInfo,
+            pageTitle : 'Message Here',
+            path : '/',
+            hasInfo : loginInfo.length > 0,
+            activeMessage : true,
+            LoginCSS : true
+        });
+    });
+};
