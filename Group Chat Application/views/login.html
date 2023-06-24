@@ -20,7 +20,7 @@
     </header>
 
     <main>
-        <form class="loginForm" id ="loginForm"action="/login" method="POST">
+        <form class="loginForm" id ="loginForm" action="/login" method="POST">
             <div class="form-control">
                 <label for="username">Username</label>
                 <input type="text" name="username" id="username" placeholder="Enter Username">
@@ -28,7 +28,7 @@
 
             <button type="submit"> Login </button>
         </form>
-        <script>
+        <!-- <script>
             document.getElementById('loginForm').addEventListener('submit', function (event) {
                 event.preventDefault();
 
@@ -36,7 +36,7 @@
                 localStorage.setItem('username', username);
                 window.location.href = '/';
             });
-        </script>
+        </script> -->
     </main>
 </body>
 

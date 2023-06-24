@@ -1,9 +1,13 @@
+const path = require('path');
 
 const express = require('express');
 
-const router = express.Router();
 const chatController = require('./controllers/chat')
 
-router.get('/', chatController.messageController);
+const router = express.Router();
+
+router.get('/', chatController.messagePage);
+
+router.post('/', chatController.postMessage);
 
 module.exports = router;
