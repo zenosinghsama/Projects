@@ -11,20 +11,20 @@ exports.loginPage = (req, res, next) => {
 }
 
 exports.postLogin = (req, res, next) => {
-    const login = new Login(req.body.title);
+    const login = new Login(req.body.username);
     login.save();
-    res.redirecct('/');
+    res.redirect('/');
 }
 
 exports.getLoginInfo = (req, res, next) => {
     Login.fetchAll((loginInfo) => {
         res.render('chat', {
             prods: loginInfo,
-            pageTitle : 'Message Here',
-            path : '/',
-            hasInfo : loginInfo.length > 0,
-            activeMessage : true,
-            LoginCSS : true
+            pageTitle: 'Message Here',
+            path: '/',
+            hasInfo: loginInfo.length > 0,
+            activeShop: true,
+            loginCSS: true
         });
     });
 };

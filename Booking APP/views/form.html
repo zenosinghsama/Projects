@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking APP</title>
+    <link rel="stylesheet" href="/main.css">
+
+</head>
+<body>
+    <div class="container">
+        <div class=" border-3 border-#ff8c00 p-1 rounded" style="border: 2px solid darkorange;">
+        <h3>Book a call</h3>
+        <h6>Book a call slot and our representative will call you within 1hr of selected time</h6>
+       <hr size="5px" width="100%" color= gray>
+        <form action="/" method="POST">
+            <label for="name" class="form-label">Name:</label>
+            <input type="name" id="name" class="form-control">
+            <label for="email" class="form-label">Email:</label>
+            <input type="email" id="email" class="form-control">
+            <label for="phone" class="form-label">Phone:</label>
+            <input type="phone" id="phonenumber" class="form-control">
+
+            <div class="row row-cols">
+                <div class="col">
+                    <label for="date" class="form-label">Time for Call:</label>
+                    <input type="date" id="date" class="form-control">
+                </div>
+
+                <div class="col gy-sm-2">
+                    <label for="time" id="timelabel"></label>
+                    <input type="time" id="time" class="form-control">
+                </div>
+            </div>
+            <br>
+            
+            <button class="btn">GET A CALL</button>
+            </form>
+        </div> 
+    </div>
+    </div>
+
+</body>
+</html>

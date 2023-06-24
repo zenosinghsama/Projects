@@ -3,22 +3,22 @@ const path = require('path');
 
 module.exports = class Login {
     constructor(t) {
-        this.title = t;
+        this.username = t;
     }
 
     save() {
         const p = path.join(
-            path.dirname(process.mainModule.filename),
+            path.dirname(require.main.filename),
             'data',
             'loginInfo.json'
         );
         fs.readFile(p, (err, fileContent) => {
-            let info = [];
+            let loginInfo = [];
             if(!err) {
-                info = JSON.parse(fileContent);
+                loginInfo = JSON.parse(fileContent);
             }
-            info.push(this);
-            fs.writeFile(p, JSON.stringify(info), (err) => {
+            loginInfo.push(this);
+            fs.writeFile(p, JSON.stringify(loginInfo), (err) => {
                 if(err) {
                     console.log(err);
                 }
@@ -28,7 +28,7 @@ module.exports = class Login {
 
     static fetchAll(cb) {
         const p = path.join(
-            path.dirname(process.mainModule.filename),
+            path.dirname(require.main.filename),
             'data',
             'loginInfo.json'
         );
@@ -40,3 +40,4 @@ module.exports = class Login {
         });
     }
 };
+ 
