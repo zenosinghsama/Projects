@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sellers Admin Page</title>
+
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+
+<body>
+
+    <div class="container">
+        <form class="sellersPage" onsubmit="AddProduct(event)" method="POST">
+            <label for="price" class="form-label">Selling Price:</label>
+            <input type="number" id="price" name="sellingprice">
+            <label for="name" class="form-label">Product Name:</label>
+            <input type="text" id="name" name="productname">
+            <label for="category" id="category" class="form-label">Choose Category:</label>
+            <select id="category">
+                <option value="Electronics">Electronics</option>
+                <option value="Skin Care">Skin Care</option>
+                <option value="Food">Food</option>
+            </select>
+            <button class="btn" id="submitBtn" type="submit">Add Product</button>
+        </form>
+    </div>
+    <div id="displayui"></div>
+
+
+    <ul id="productsList"></ul>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"></script>
+
+    <script>
+        async function AddProduct(event) {
+            event.preventDefault();
+
+            const price = document.getElementById('price').value;
+            const name = document.getElementById('name').value;
+            const category = document.getElementById('category').value;
+
+            try {
+                const response = await axios.post('/add-product', {
+                    price: price,
+                    name: name,
+                    category: category
+                });
+
+                document.getElementById('price').value = '';
+                document.getElementById('name').value = '';
+                document.getElementById('category').value = '';
+
+                showProducts();
+
+            } catch (err) {
+                console.log(err)
+            }
+        };
+
+        async function showProducts(product) {
+            try {
+                const response = await axios.get("http://localhost:3000/products");
+                const allProducts = response.data.allProducts;
+                const productsList = document.getElementById('productsList');
+                productsList.innerHTML = '';
+
+                allProducts.forEach(product => {
+                    const li = document.createElement('li');
+                    const price = document.createElement('span');
+                    const category = document.createElement('span');
+                    const name = document.createElement('span');
+                    const deleteBtn = document.createElement('button');
+
+                    price.innerText = product.price;
+                    name.innerText = product.name;
+                    category.innerText = product.category;
+                    deleteBtn.innerText = 'Delete';
+
+                    deleteBtn.addEventListener('click', () => {
+                        deleteProduct(product.id);
+                        li.remove();
+                    })
+
+                    li.appendChild(price);
+                    price.innerHTML += " - ";
+                    li.appendChild(name);
+                    name.innerHTML += " - ";
+                    li.appendChild(category);
+                    li.appendChild(deleteBtn);
+
+                    productsList.appendChild(li);
+                });
+            } catch (err) {
+                console.log(err);
+            }
+        }
+
+        window.addEventListener("DOMContentLoaded", showProducts);
+
+        async function deleteProduct(productId) {
+            try {
+                await axios.delete(`/products/${productId}`);
+            } catch (err) {
+                console.log(err);
+            }
+        }
+
+      
+
+    </script>
+</body>
+
+</html>
