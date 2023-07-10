@@ -17,8 +17,12 @@ document.getElementById('signupForm').addEventListener("submit", async(e) => {
         document.getElementById('email').value = '';
         document.getElementById('password').value = '';
 
-    } catch(err) {
+    }  catch (err) {
         console.log(err);
-        errorMessage.textContent = "Network Error: Unable to submit the form. Please try again later.";
+        if (err.response && err.response.status === 500) {
+            errorMessage.textContent = "Error: Username or Email already exists.";
+        } else {
+            errorMessage.textContent = "Network Error: Unable to submit the form. Please try again later.";
+        }
     }
-})
+});
