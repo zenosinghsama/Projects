@@ -11,6 +11,7 @@ var cors = require('cors');
 const app = express();
 
 const adminRoutes = require('./routes/admin');
+const signupRoutes = require('./routes/signup');
 
 app.use(cors());
 
@@ -21,6 +22,7 @@ app.set('views', path.join(__dirname, 'Views'));
 app.set('view engine', 'html');
 
 app.use('/admin', adminRoutes);
+app.use(signupRoutes);
 
 app.get('/', (req, res, next) => {
     Expense.findAll() 

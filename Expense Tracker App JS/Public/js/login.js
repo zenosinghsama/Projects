@@ -13,9 +13,13 @@ document.getElementById('loginForm').addEventListener("submit", async(e) => {
         document.getElementById('email').value = '';
         document.getElementById('password').value = '';
 
+        if(response.data.redirectUrl) {
+            window.location.href = response.data.redirectUrl;
+        } 
+
     } catch (err) {
-        const { field } = err.response.data
-        if(err.response.status === 500 && field === "email") {
+
+        if(err.response.status === 404) {
             errorMessage.textContent = "Error: Email doesn't exist";
         } else {
             errorMessage.textContent = "Incorrect Password";

@@ -12,7 +12,7 @@
     integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
     crossorigin="anonymous"></script>
 
-    <link rel="stylesheet" href="/Public/css/main.css">
+  <link rel="stylesheet" href="/css/main.css">
 
 
 
@@ -20,26 +20,154 @@
 
 <body>
   <div class="container">
-    <form class="expenseForm" action="/" method="POST">
-    <label for="amount" class="form-label" style="display: inline-block;">Choose Expense Amount:</label>
-    <input type="text" id="amount" name="amount" class="form-control" required>
-    <label for="description" class="form-label" style="display: inline-block;">Choose Description:</label>
-    <input type="text" id="description" name="description" class="form-control" required>
-    <label for="category" class="form-label" style="display: inline-block;">Choose Category:</label>
-    <select id="category" name="category">
-      <option value="food">Food</option>
-      <option value="bills">Bills</option>
-      <option value="entertainment">Entertainment</option>
-      <option value="transportation">Transportation</option>
-      <option value="miscellaneous">Miscellaneous</option>
-    </select>
-    <button class="btn">Add Expense</button>
+    <form class="expenseForm" onsubmit="AddExpense(event)" method="POST">
+      <label for="date" class="form-label" style="display: inline-block;">Date (YYYY-MM-DD):</label>
+      <input type="date" id="date" name="date" pattern="\d{4}-\d{2}-\d{2}" class="form-control" required>
+      <label for="amount" class="form-label" style="display: inline-block;">Choose Expense Amount:</label>
+      <input type="number" id="amount" name="amount" class="form-control" required>
+      <label for="detail" class="form-label" style="display: inline-block;">Detail:</label>
+      <input type="text" id="detail" name="detail" class="form-control" required>
+      <label for="category" class="form-label" style="display: inline-block;">Choose Category:</label>
+      <select id="category" name="category">
+        <option value="Housing">Housing</option>
+        <option value="Taxes">Taxes</option>
+        <option value="Food">Food</option>
+        <option value="Transportation">Transportation</option>
+        <option value="Services">Services</option>
+        <option value="Utilities">Utilities</option>
+        <option value="Miscellaneous">Miscellaneous</option>
+      </select>
+      <button class="btn" id="submitBtn" type="submit">Add Expense</button>
     </form>
   </div>
   <div id="displayui"></div>
-  </div>
-  <script src="/Public/js/main.js"></script>
 
+  <h1>All Expenses</h1>
+  <ul id="expensesList"></ul>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"></script>
+
+  <script>
+
+    async function AddExpense(event) {
+      event.preventDefault();
+
+      const date = document.getElementById("date").value;
+      const amount = document.getElementById("amount").value;
+      const detail = document.getElementById("detail").value;
+      const category = document.getElementById("category").value;
+
+      const submitBtn = document.getElementById('submitBtn');
+      const isEditing = submitBtn.innerText === 'Update Expense';
+
+      try {
+        if (isEditing) {
+          const expenseId = submitBtn.dataset.expenseId;
+          await axios.put(`/admin/expenses/${expenseId}`, {
+            date: date,
+            amount: amount,
+            detail: detail,
+            category: category
+          });
+          submitBtn.innerText = 'Add Expense';
+          submitBtn.removeAttribute('data-expense-id');
+          resetForm();
+        } else {
+          const response = await axios.post('/admin/add-expense', {
+            date: date,
+            amount: amount,
+            detail: detail,
+            category: category
+          });
+          document.getElementById('date').value = '';
+          document.getElementById('amount').value = '';
+          document.getElementById('detail').value = '';
+          document.getElementById('category').value = '';
+        }
+        showExpenses();
+      }
+      catch (err) {
+        console.log(err);
+      }
+    };
+
+    async function showExpenses(expense) {
+      try {
+        const response = await axios.get("http://localhost:4000/admin/expenses");
+        const allExpenses = response.data.allExpenses;
+        const expensesList = document.getElementById('expensesList');
+        expensesList.innerHTML = '';
+
+        allExpenses.forEach(expense => {
+          const li = document.createElement("li");
+          const date = document.createElement("span");
+          const amount = document.createElement("span");
+          const detail = document.createElement("span");
+          const category = document.createElement("span");
+          const editBtn = document.createElement("editbutton");
+          const deleteBtn = document.createElement("button");
+
+          date.innerText = expense.date;
+          amount.innerText = expense.amount;
+          detail.innerText = expense.detail;
+          category.innerText = expense.category;
+          editBtn.innerText = "Edit";
+          deleteBtn.innerText = "Delete";
+
+          editBtn.addEventListener("click", () => {
+            document.getElementById('date').value = expense.date;
+            document.getElementById('amount').value = expense.amount;
+            document.getElementById('detail').value = expense.detail;
+            document.getElementById('category').value = expense.category;
+
+            submitBtn.innerText = 'Update Expense';
+            submitBtn.setAttribute('data-expense-id', expense.id);
+          });
+
+          deleteBtn.addEventListener("click", () => {
+            deleteExpense(expense.id);
+            li.remove();
+          })
+
+          li.appendChild(date);
+          date.innerHTML += " - "
+          li.appendChild(amount);
+          amount.innerHTML += " - "
+          li.appendChild(detail);
+          detail.innerHTML += " - "
+          li.appendChild(category);
+          category.innerHTML += "  "
+          li.appendChild(editBtn);
+          li.appendChild(deleteBtn);
+
+          expensesList.appendChild(li);
+
+        });
+      }
+      catch (err) {
+        console.log(err);
+      }
+    }
+
+    function resetForm() {
+      document.getElementById('date').value = '';
+      document.getElementById('amount').value = '';
+      document.getElementById('detail').value = '';
+      document.getElementById('category').value = '';
+    }
+
+    async function deleteExpense(expenseId) {
+      try {
+        await axios.delete(`/admin/expenses/${expenseId}`);
+      }
+      catch (err) {
+        console.log(err);
+      }
+    }
+
+    window.addEventListener("DOMContentLoaded", showExpenses);
+
+  </script>
 </body>
 
 </html>
