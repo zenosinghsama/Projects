@@ -9,8 +9,8 @@ exports.getAddUser = (req, res, next) => {
 exports.postAddUser = async (req, res, next) => {
     try {
         const username = req.body.username;
-        const email = req.body.username;
-        const password = req.body.username;
+        const email = req.body.email;
+        const password = req.body.password;
 
         const user = await User.create ({
             username: username,
