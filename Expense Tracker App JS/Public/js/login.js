@@ -5,17 +5,23 @@ document.getElementById('loginForm').addEventListener("submit", async(e) => {
     let password = document.getElementById("password").value;
 
     try {
+        console.log('Sending login request...');
         const response = await axios.post("/user/login", {
             email: email,
             password: password
         })
 
-        document.getElementById('email').value = '';
-        document.getElementById('password').value = '';
+        // Store the Token
+        const token = response.data.token;
+        if(token) {
+            console.log('Storing token:', token);
+            localStorage.setItem('token', token);
+            window.location.href = '/admin/add-expense';
+        }
 
     } catch (err) {
-        const { field } = err.response.data
-        if(err.response.status === 500 && field === "email") {
+        console.error('Login error:', err);
+        if(err.response.status === 404) {
             errorMessage.textContent = "Error: Email doesn't exist";
         } else {
             errorMessage.textContent = "Incorrect Password";
