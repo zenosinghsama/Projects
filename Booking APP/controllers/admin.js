@@ -1,41 +1,77 @@
+const path = require('path');
+
 const User = require('../models/user');
 
 //Add User
 exports.getAddUser = (req, res, next) => {
-    res.render('login', {
-        pageTitle: 'ADD USER',
-        path: '/'
-    });
+    res.sendFile(path.join(__dirname, '../views', 'form.html'));
 };
 
-exports.postAddUser = (req, res, next) => {
-    const name = req.body.name;
-    const email = req.body.email;
-    const phonenumber = req.body.phonenumber;
-    User.create({
-        name: name,
-        email: email,
-        phonenumber: phonenumber
-    })
-    .then(result => {
-        console.log('User Created');
-        res.redirect('/users')
-    })
-    .catch(err => {
-        console.log(err)
-    });
+
+exports.postAddUser = async (req, res, next) => {
+
+    try {
+        const name = req.body.name;
+        const email = req.body.email;
+        const phonenumber = req.body.phonenumber;
+
+        const user = await User.create({
+            name: name,
+            email: email,
+            phonenumber: phonenumber
+        })
+        res.status(201).json({ newUser: user });
+    }
+    catch (err) {
+        res.status(500).json({
+            error: err
+        })
+    }
 };
 
-exports.getUser = (req, res, next) => {
-    User.findAll()
-    .then(users => {
-        res.render('admin/users', {
-            prods: users,
-            pageTitle: 'Admin',
-            path: '/admin/users'
-        });
-    })
-    .catch(err => console.log(err));
+
+exports.getUser = async (req, res, next) => {
+    try {
+        const users = await User.findAll()
+        res.status(200).json({ allUsers: users });
+    }
+    catch (err) {
+        console.log("Failed to GET User", JSON.stringify(err))
+        res.status(500).json({
+            error: err
+        })
+    }
 };
 
+exports.updateUser = async (req, res, next) => {
+    const userId = req.params.userId;
+
+    try {
+        const updatedUser = await User.update (
+            {
+                name: req.body.name,
+                email: req.body.email,
+                phonenumber: req.body.phonenumber
+
+        },
+            { where: { id:userId } }
+        );
+        res.status(200).json( {message: 'User Updated' });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ error: err });
+    }
+}
+
+exports.deleteUser = async (req, res, next) => {
+    const userId = req.params.userId;
+
+    try {
+        await User.destroy({ where: { id: userId } });
+        res.status(200).json({ message: 'User Deleted' });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ error: err });
+    }
+}
 
