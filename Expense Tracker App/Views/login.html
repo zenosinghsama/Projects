@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Expense App - Login</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <h1>Login</h1>
+
+  <form id="login-form">
+    <label for="email">Email:</label>
+    <input type="email" id="emailInput" placeholder="Enter Email" required>
+
+    <label for="password">Password:</label>
+    <input type="password" id="passwordInput" placeholder="Enter Password" required>
+
+    <button type="submit" class="addBtn">Login</button>
+    <p>Don't have an account? </p>
+    <a href="signup.html">
+      <button class="register">Register</a></button>
+    <div id="errorMessage"></div>
+  </form>
+
+  <script src="/js/login.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"></script>
+</body>
+</html>

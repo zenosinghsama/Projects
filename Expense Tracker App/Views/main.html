@@ -10,13 +10,13 @@
     <div class="top">
         <div class="add">
             <main class="main">
-                <form id="expenseForm">
+                <form id="expenseForm" >
                     <label for="amount">Expense Amount:</label>
-                    <input type="number" id="amount" placeholder="Enter Amount">
+                    <input type="number" id="amount" name="amount" placeholder="Enter Amount">
                     <label for="description">Expense Description:</label>
-                    <input type="text" id="description" placeholder="Enter description">
+                    <input type="text" id="description" name="description" placeholder="Enter description">
                     <label for="category">Expense Category:</label>
-                    <select id="category">
+                    <select id="category" name="category">
                         <option value="chooseOne">Choose One...</option>
                         <option value="Electronics">Electronics...</option>
                         <option value="Food">Food</option>
@@ -29,20 +29,11 @@
         </div>
     </div>
 
-    <div id="expenseTableContainer">
-        <table class="table table-striped mt-5">
-            <thead>
-                <tr>
-                    <th>Amount</th>
-                    <th>Description</th>
-                    <th>Category</th>
-                </tr>
-            </thead>
-            <tbody id="listofExpenses"></tbody>
-        </table>
-    </div>
+
+ <ul id="expenseList"></ul>
 
     <div id="error" style="display: none;"></div>
+    
     <script src="/js/main.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"></script>
 </body>
