@@ -1,69 +1,71 @@
-function addNewExpense (e) {
+document.getElementById("expenseForm").addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const expenseDetails = {
-        amount: e.target.amount.value,
-        description: e.target.description.value,
-        category: e.target.category.value,
-        userId: 1
-    }
-    console.log(expenseDetails);
+    let amount = document.getElementById("amount").value;
+    let description = document.getElementById("description").value;
+    let category = document.getElementById("category").value;
 
-     //RETRIEVE TOKEN FROM LOCAL STORAGE
-     const token = localStorage.getItem('token');
-     //SEND EXPENSE DATA TO SERVER
-     axios.post('/admin/add-expense',expenseDetails, { headers: { "Authorization": token } })
-        .then((response) => {
-            if (response.data.expense) {
-                addExpensetoUI(response.data.expense);
-            } else {
-                throw new Error("Invalid response data format.");
-            }
-        }).catch(err => showError(err))
-}    
+    if (category != "chooseOne" && name.length > 0 && price > 0) {
+        const expenseDetails = {
+            amount,
+            description,
+            category,
+            userId: 1,
+          };
 
-    
-window.addEventListener("DOMContentLoaded", () => {
-    const expenseForm = document.getElementById("expenseForm");
-    expenseForm.addEventListener("submit", addNewExpense);
-    const token = localStorage.getItem('token')
-    axios.get ('http://localhost:4000/admin/expenses', { headers: { "Authorization" : token } })
-    .then(response => {
-        const expenseData = response.data.expense;
-        console.log(response.data);
-        console.log(expenseData);
-        if (Array.isArray(expenseData)) {
-          expenseData.forEach(expense => {
-            addExpensetoUI(expense);
-          });
-    } else {
-        showError(new Error("Invalid response data format."));
-    }
-})
-        .catch(err => {
-            showError(err)
-        });
+          try {
+            //RETRIEVE TOKEN FROM LOCAL STORAGE
+            const token = localStorage.getItem("token");
+            //SEND EXPENSE DATA TO SERVER
+            const response = await fetch ("/admin/add-expense", {
+                expenseDetails,
+                headers: { 
+                    "Authorization": token,
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(expenseDetails),
+            });
+              const data = await response.json();
+              if(response.ok) {
+                ShowExpense();
+                document.getElementById("expenseForm").reset();
+              } else {
+                console.log("Failed to Add Expense", data.error);
+              }
+  } catch (err) {
+    console.log(err);
+  }
+}
 });
 
+const ShowExpense = async () => {
+   try {
+    const token = localStorage.getItem("token");
+    const response = await fetch("/admin/expenses", {
+        headers: { "Authorization": token}
+    });
+    const data = await response.json();
 
-function addExpensetoUI (expense) {
-    const parentElement = document.getElementById('listofExpenses');
-    const expenseElementId = `expense - ${expense.id}`;
-    parentElement.innerHTML += `
-    <li id = "${expenseElementId}>
-    ${expense.amount} - ${expense.description} - ${expense.category}
-    </li>
-    `;
-}
+    if(response.ok) {
+        const expenses = data.allExpenses;
+        const list = document.getElementById("expenseList");
+        list.innerHTML = "";
 
-// function deleteExpense(e, expenseid) {
-//     axios.delete(`/admin/delete-expense/${expenseid}`, { headers: { "Authorization": token }}).then(() => {
-//         removeExpensefromUI(expenseid);
-//     })
-// }
+        for(let i = 0; i < expenses.length; i++) {
+            list.innerHTML += `
+            <div>
+                <span><b>Amount:</b> ${expenses[i].amount}</span>
+                <span><b>Description:</b> ${expenses[i].description}</span>
+                <span><b>Category:</b> ${expenses[i].category}</span>
+            </div>
+            `;
+        }
+    } else {
+        console.log("No Expenses Found");
+    }
+   } catch(err) {
+    console.log(err);
+   }
+};
 
-function showError(error) {
-    const errorElement = document.getElementById('error');
-    errorElement.textContent = `Error: ${error.message}`;
-    errorElement.style.display = 'block'
-}
+ShowExpense();
