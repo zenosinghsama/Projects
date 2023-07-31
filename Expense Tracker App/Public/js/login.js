@@ -13,9 +13,11 @@ document.getElementById('login-form').addEventListener("submit", async(e) => {
 
     // Store the Token
     const token = response.data.token;
+    const id = response.data.id;
     if(token) {
       console.log('Storing Token', token);
       localStorage.setItem('token', token);
+      localStorage.setItem('id', id);
       window.location.href = "/main.html";
     }
     alert ("User Logged In")
@@ -28,3 +30,7 @@ document.getElementById('login-form').addEventListener("submit", async(e) => {
     }
   }
 });
+
+function forgotPass() {
+  window.location.href = "/forgotPass.html";
+}

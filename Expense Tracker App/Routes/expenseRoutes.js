@@ -6,10 +6,14 @@ const authMiddleware = require('../Middleware/auth');
 
 const expenseController = require('../Controllers/expenseController');
 
-// router.get('/admin/add-expense', authMiddleware.authenticateToken,expenseController.getExpenseForm);
-
-router.post('/admin/add-expense', authMiddleware.authenticateToken, expenseController.addExpense);
-
 router.get('/admin/expenses', authMiddleware.authenticateToken, expenseController.getAllExpenses);
+
+router.get('/admin/getExpenseById/:id', authMiddleware.authenticateToken, expenseController.getExpenseById);
+
+router.post('/admin/add-expense', authMiddleware.authenticateToken, expenseController.addNewExpense);
+
+router.put('/admin/update-expense/:id', authMiddleware.authenticateToken, expenseController.updateExpense);
+
+router.delete('/admin/delete-expense/:id', authMiddleware.authenticateToken ,expenseController.deleteExpense);
 
 module.exports = router;
