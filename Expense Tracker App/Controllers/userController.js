@@ -1,13 +1,13 @@
+const User = require('../Models/userModel');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const jwtSecretKey = 'expenseapp';
+require('dotenv').config();
 
-const User = require('../Models/userModel');
-const path = require('path');
+
 
 
 //SIGNUP CONTROLLER
-exports.createNewUser = async(req, res, next) => {
+const createNewUser = async(req, res, next) => {
     try {
         const { name, email, password } = req.body;
 
@@ -28,25 +28,20 @@ exports.createNewUser = async(req, res, next) => {
             password: hashedPassword
         });
 
-        res.status(200).json({ message: 'User created successfully'});
+        res.status(201).json({ message: 'User created successfully'});
     } catch(err) {
         console.log(err);
         res.status(500).json({ error: 'Internal Server Error'}); 
     }
 }
 
-// //GET LOGIN PAGE
-// exports.getLoginPage = async (req, res, next) => {
-//     res.sendFile(path.join(__dirname, '../Views', 'login.html'));
-// }
-
 //GENERATE TOKEN
 const generateAccessToken = (id, name, ispremiumuser) => {
-    return jwt.sign({ userId: id, name: name, ispremiumuser }, 'cgM1IZO3sD')
+    return jwt.sign({ userId : id, name: name, ispremiumuser }, process.env.TOKEN_SECRET)
 }
 
 // LOGIN CONTROLLER
-exports.postLogin = async (req, res, next) => {
+const postLogin = async (req, res, next) => {
     try {
         const { email, password } = req.body;
 
@@ -61,7 +56,8 @@ exports.postLogin = async (req, res, next) => {
                     return res.status(200).json({ 
                     success: true,
                     message:"User Logged in successfully",
-                    token: generateAccessToken(user[0].id, user[0].name, user[0].ispremiumuser)
+                    token: generateAccessToken(user[0].id, user[0].name, user[0].ispremiumuser),
+                    id: user[0].id
                 });
                 }
                 else if(result == false) {
@@ -75,4 +71,10 @@ exports.postLogin = async (req, res, next) => {
         console.error('Error logging in:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
+}
+
+module.exports = {
+    createNewUser,
+    generateAccessToken,
+    postLogin
 }

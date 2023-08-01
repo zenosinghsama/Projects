@@ -13,18 +13,44 @@ document.getElementById('login-form').addEventListener("submit", async(e) => {
 
     // Store the Token
     const token = response.data.token;
+    const id = response.data.id;
     if(token) {
       console.log('Storing Token', token);
       localStorage.setItem('token', token);
+      localStorage.setItem('id', id);
       window.location.href = "/main.html";
     }
-    alert ("User Logged In")
+    showPopupNotification("WELCOME");
   } catch (err) {
     console.log('Login error', err);
     if(err.response.status === 404)  {
-      errorMessage.textContent = "Error: Email doesn't exists";
+      showPopupNotification("USER DOES NOT EXIST...CREATE AN ACCOUNT", "error")
     } else {
-      errorMessage.textContent = "Incorrect Password";
+      showPopupNotification("INCORRECT PASSWORD!", "error");
     }
   }
 });
+
+function forgotPass() {
+  window.location.href = "/forgotPass.html";
+}
+
+//POPUP NOTIFICATION
+function showPopupNotification(message, type="success") {
+  const popup = document.getElementById("popupNotification");
+  popup.innerText = message;
+  
+  if(type === "error") {
+    popup.classList.remove("success");
+    popup.classList.add("error");
+  } else {
+    popup.classList.remove("error");
+    popup.classList.add("success");
+  }
+
+  popup.classList.add("show");
+
+  setTimeout(() => {
+    popup.classList.remove("show");
+  }, 3000);
+}

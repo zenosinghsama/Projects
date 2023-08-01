@@ -19,6 +19,10 @@ const ExpenseModel = sequelize.define('Expense', {
     category: {
         type: Sequelize.STRING,
         allowNull: false
+    },
+    amountType: {
+        type: Sequelize.STRING,
+        defaultValue: 'expense'
     }
 });
 

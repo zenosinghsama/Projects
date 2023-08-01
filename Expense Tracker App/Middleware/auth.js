@@ -7,7 +7,7 @@ exports.authenticateToken = (req, res, next) => {
     const token = req.header('Authorization');
     console.log(token);
 
-    const user = jwt.verify(token, 'cgM1IZO3sD');
+    const user = jwt.verify(token, process.env.TOKEN_SECRET);
     console.log('userID>>>>', user.userId)
 
     User.findByPk(user.userId)
@@ -20,4 +20,3 @@ exports.authenticateToken = (req, res, next) => {
     res.status(401).json({ success: false, message:'authentication failed'})
   }
 }
-
