@@ -4,7 +4,8 @@ require('dotenv').config()
 const cors = require("cors");
 const fs = require("fs");
 const bodyParser = require("body-parser");
-const sequelize = require("./Util/database");
+// const sequelize = require("./Util/database");
+const mongoose = require('mongoose');
 const path = require("path");
 const helmet = require("helmet");
 const morgan = require("morgan");
@@ -33,9 +34,10 @@ const accessLogStream = fs.createWriteStream(
 const csp = {
   directives: {
     defaultSrc: ["'self'"],
-    scriptSrc: ["'self'", "https://checkout.razorpay.com", "https://cdnjs.cloudflare.com"],
+    scriptSrc: ["'self'", "https://checkout.razorpay.com", "https://cdnjs.cloudflare.com", "https://cdn.jsdelivr.net", "https://ajax.googleapis.com"],
+    imgSrc: ["'self'", "https://res.cloudinary.com"],
     frameSrc: ["'self'", "https://api.razorpay.com"],
-    'script-src-attr': ["'none'", "'unsafe-inline'"],
+    'script-src-attr': ["'unsafe-inline'"],
   },
 };
 
@@ -61,24 +63,37 @@ app.use("/password", ResetPassRoutes);
 
 
 //ASSOCIATIONS
-User.hasMany(Expense);
-Expense.belongsTo(User);
+// User.hasMany(Expense);
+// Expense.belongsTo(User);
 
-User.hasMany(Order);
-Order.belongsTo(User);
+// User.hasMany(Order);
+// Order.belongsTo(User);
 
-User.hasMany(ForgotPass);
-ForgotPass.belongsTo(User);
+// User.hasMany(ForgotPass);
+// ForgotPass.belongsTo(User);
 
-User.hasMany(Downloads, { foreignKey: "userId", sourceKey: "id" });
-Downloads.belongsTo(User);
+// User.hasMany(Downloads, { foreignKey: "userId", sourceKey: "id" });
+// Downloads.belongsTo(User);
 
 //Server
-sequelize
-  .sync()
-  .then(() => {
-    app.listen(process.env.PORT || 4000);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+// sequelize
+//   .sync()
+//   .then(() => {
+//     app.listen(process.env.PORT || 5000);
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//   });
+
+//Mongoose Connection
+mongoose.connect('mongodb+srv://iamarjunsingh007:7K0sU3VGZTM8nIwh@cluster0.mzyxsff.mongodb.net/expensetracker?retryWrites=true&w=majority',{
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+.then(() => {
+  console.log('COnnected to MongoDB')
+  app.listen(process.env.PORT || 5000);
+})
+.catch((err) => {
+  console.log("Error connecting",err);
+})

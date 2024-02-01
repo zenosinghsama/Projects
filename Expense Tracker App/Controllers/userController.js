@@ -3,15 +3,12 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
-
-
-
 //SIGNUP CONTROLLER
 const createNewUser = async(req, res, next) => {
     try {
         const { name, email, password } = req.body;
 
-        const existingUser = await User.findOne({ where : { email: email } });
+        const existingUser = await User.findOne({ email: email  });
         if(existingUser) {
             return res.status(409).json({ error: 'Email already exists'})
         }
@@ -45,10 +42,10 @@ const postLogin = async (req, res, next) => {
     try {
         const { email, password } = req.body;
 
-        const user = await User.findAll({ where: { email } });
+        const user = await User.findOne({  email: email });
 
-        if(user.length > 0) {
-            await bcrypt.compare(password, user[0].password, (err, result) => {
+        if(user) {
+            await bcrypt.compare(password, user.password, (err, result) => {
                 if(err) {
                     throw new Error("Something Went Wrong");
                 }
@@ -56,8 +53,8 @@ const postLogin = async (req, res, next) => {
                     return res.status(200).json({ 
                     success: true,
                     message:"User Logged in successfully",
-                    token: generateAccessToken(user[0].id, user[0].name, user[0].ispremiumuser),
-                    id: user[0].id
+                    token: generateAccessToken(user._id, user.name, user.ispremiumuser),
+                    id: user._id
                 });
                 }
                 else if(result == false) {

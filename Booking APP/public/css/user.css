@@ -1,0 +1,21 @@
+.user-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.user-list-item {
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+}
+
+.user-details {
+    font-weight: bold;
+}
+
+
+body{
+    background-image: url("https://png.pngtree.com/background/20210710/original/pngtree-simple-small-fresh-watercolor-company-profile-ppt-background-picture-image_1021507.jpg");
+    background-size: 2500px;
+}

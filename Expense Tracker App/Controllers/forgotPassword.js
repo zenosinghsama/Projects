@@ -41,13 +41,13 @@ const hashPassword = async (password) => {
 const forgotPassword = async (req, res) => {
   const { email } = req.body;
   try {
-    const user = await UserModel.findOne({ where: { email } });
+    const user = await UserModel.findOne({ email });
     if (!user) {
       return res.status(404).json({ message: "USER DOES NOT EXISTS" });
     } 
 
       const id = uuid.v4();
-      const addForgot = await forgotPassModel.create({ id, active: true, userId: user.dataValues.id });
+      const addForgot = await forgotPassModel.create({ id, active: true, userId: user._id });
       if (!addForgot) {
         throw new Error ("ERROR IN CREATING REQUEST");
         }
@@ -62,20 +62,20 @@ const forgotPassword = async (req, res) => {
   }
 };
 
-const resetpassword = async (req, res) => {
+const resetPassword = async (req, res) => {
   const id = req.params.id;
   try{
-    const forgotpasswordrequest = await forgotPassModel.findOne({ where: { id, active: true } });
-    if(!forgotpasswordrequest) {
+    const forgotPasswordRequest = await forgotPassModel.findOne( { id, active: true } );
+    if(!forgotPasswordRequest) {
       return res.status(404).send("RESET PASSWORD LINK NOT FOUND");
     }
 
-    await forgotpasswordrequest.update({ active: false });
+    await forgotPasswordRequest.updateOne({ active: false });
 
     const formHtml = `
       <html>
       <script>
-        function formsubmitted(e) {
+        function formSubmitted(e) {
           e.preventDefault();
           console.log('called');
         }
@@ -100,18 +100,18 @@ const updatePassword = async (req, res) => {
     const { newpassword } = req.query;
     const { resetpasswordid } = req.params;
 
-    const validUser = await forgotPassModel.findOne({ where: { id: resetpasswordid } });
-    if(!validUser) {
+    const validUser = await forgotPassModel.findOne({ id: resetpasswordid });
+    if(!validUser || !validUser.active) {
       return res.status(404).json({ error: "INVALID RESET PASSWORD LINK", success: false });
     } 
     
-    const user = await UserModel.findOne({ where: { id: validUser.userId } });
+    const user = await UserModel.findById(validUser.userId);
         if (!user) {
           return res.status(404).json({ error: "USER NOT FOUND", success: false }); 
         }
 
         const hashedPassword = await hashPassword(newpassword);
-        await user.update({ password: hashedPassword });
+        await user.updateOne({ password: hashedPassword });
 
         return res.status(200).json({ message: "PASSWORD UPDATED SUCCESSFULLY", success: true });
   } catch (err) {
@@ -123,5 +123,5 @@ const updatePassword = async (req, res) => {
 module.exports = {
   forgotPassword,
   updatePassword,
-  resetpassword,
+  resetPassword,
 };

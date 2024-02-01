@@ -5,9 +5,7 @@ const { uploadToS3 } = require('../Services/s3Services');
 
 const getLeaderBoard = async (req, res) => {
   try {
-    const usersLeaderBoard = await User.findAll({
-      order: [["totalExpenses", "DESC"]],
-    });
+    const usersLeaderBoard = await User.find().sort({ totalExpenses: -1 });
     res.status(200).json(usersLeaderBoard);
   } catch (err) {
     console.log("ERROR IN FETCHING LEADER BOARD DATA",err);
@@ -18,8 +16,8 @@ const getLeaderBoard = async (req, res) => {
 const getExpenseReport = async (req, res) => {
   try {
     const userId = req.user.id;
-    const allExpenses = await Expense.findAll({ where: {userId }})
-    if(allExpenses) {
+    const allExpenses = await Expense.find({ userId })
+    if(allExpenses.length > 0) {
       const stringifiedExpenses = JSON.stringify(allExpenses);
       
       const filename = `ExpenseReport${userId}/${new Date()}.json`;
@@ -40,8 +38,8 @@ const getExpenseReport = async (req, res) => {
 const showUserDownloads = async (req, res) => {
   try {
     const userId = req.user.id;
-    const prevDownloads = await Downloads.findAll({ where: { userId }})
-    if(prevDownloads) {
+    const prevDownloads = await Downloads.find({  userId })
+    if(prevDownloads.length > 0) {
       return res.status(200).json({ prevDownloads, success: true })
     } else {
       return res.json({ message: "NO PREVIOUS DOWNLOADS", success: false})

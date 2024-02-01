@@ -1,0 +1,136 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.bookingForm {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.p-1 {
+    padding: 1rem;
+}
+
+.rounded {
+    border-radius: 1rem;
+}
+
+.form-label {
+    font-weight: bold;
+}
+
+.form-control {
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    width: 97%;
+    border-radius: 0.5rem;
+    border-color: none;
+}
+
+h1{
+    margin-top: 0;
+    color: #008080;
+    text-align: center;
+}
+
+h3{
+   margin-top: 0;
+    color: gray;
+    text-align: center;
+}
+
+hr {
+    border: none;
+    height: 5px;
+    background-color: gray;
+    margin: 1rem 0;
+    width: 100%;
+}
+
+#userDetailsH1 {
+    position: sticky;
+    bottom: 70%;
+    left: 60%;
+    
+}
+
+#usersList {
+    position: sticky;
+    bottom: 0;
+    left: 0;
+}
+  
+    #usersList {
+      bottom: 5px;
+      left: 10px;
+    }
+  
+
+.row-cols {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.btn{
+    background-color: #009688;
+    width: 100%;
+    box-sizing: border-box;  
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    position: absolute;
+    height: 50px;
+    width: 10%;
+    top: 65%;
+    left: 40%;
+    border-radius: 5px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2)
+}
+
+.btn:hover {
+    background-color: #008080;
+}
+
+li {
+    margin-bottom: 0.5rem;
+}
+
+span{
+    font-weight: bold;
+    margin-right: 0.5rem;
+}
+
+editbutton {
+    background-color: #20bdae;
+    color: white;
+    border: none;
+    padding: 0.25rem 0.5rem;
+    cursor: pointer;
+}
+
+button {
+    background-color: #eb4545;
+    color: white;
+    border: none;
+    padding: 0.25rem 0.5rem;
+    cursor: pointer;
+}
+
+editbutton:hover {
+    background-color: #1b9387;
+}
+
+button:hover {
+    background-color: #f30f0f;
+}
+
+body{
+    background-image: url("https://media.istockphoto.com/id/1398999936/vector/illustration-of-light-blue-dots-and-striped-circles-pattern-background.jpg?b=1&s=170667a&w=0&k=20&c=F58yBft-wNP_KMV4pFUR_0Tb4JQo91c327_tZXbQA3g=");
+    background-size: contain;
+}

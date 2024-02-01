@@ -1,4 +1,4 @@
-const Razorpay = require("razorpay");
+const Razorpay = require('razorpay');
 const Order = require("../Models/orders");
 const userController = require('./userController');
 
@@ -12,21 +12,28 @@ exports.purchasePremium = async (req, res) => {
 
     rzp.orders.create({ amount, currency: "INR" }, async (err, order) => {
       if (err) {
-        throw new Error(JSON.stringify(err));
+        console.log(err);
+      }
+      console.log(order);
+      if(order) {
+        try {
+          await Order.create({ orderid: order.id, status: "PENDING", user: req.user._id });
+          return res.status(201).json({ order, key_id: rzp.key_id });
+        } catch (err) {
+         console.log(err);
+        }
+      } else {
+        console.log("NO ORDER PLACED")
       }
 
-      try {
-        await req.user.createOrder({ orderid: order.id, status: "PENDING" });
-        return res.status(201).json({ order, key_id: rzp.key_id });
-      } catch (err) {
-        throw new Error(err);
-      }
     });
   } catch (err) {
     console.log(err);
     res.status(403).json({ message: "Something went wrong", error: err });
   }
 };
+
+
 
 exports.updateStatus = async (req, res) => {
   try {
@@ -37,12 +44,19 @@ exports.updateStatus = async (req, res) => {
       return res.status(404).json({ message: "Order not found" });
     }
 
-    const promise = order.update({ paymentid: payment_id, status: "SUCCESSFUL" });
-    const promise1 = req.user.update({ ispremiumuser: true });
+    const promises = [
+      order.updateOne({ paymentid: payment_id, status: "SUCCESSFUL" }),
+      req.user.updateOne({ ispremiumuser: true }),
+    ];
 
-    Promise.all([promise, promise1]).then(() => {
-      const userId = req.user.id;
-        return res.status(201).json({ success: true, message: "Transaction Successful", token: userController.generateAccessToken(userId, undefined, true) });
+    Promise.all(promises)
+    .then(() => {
+      const userId = req.user._id;
+        return res.status(201).json({ 
+          success: true, 
+          message: "Transaction Successful", 
+          token: userController.generateAccessToken(userId, undefined, true) 
+        });
     })
     .catch((err) => {
         throw new Error(err)

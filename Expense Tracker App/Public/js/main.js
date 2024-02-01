@@ -20,7 +20,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     }
     document.getElementById(
       "loggedName"
-    ).innerHTML = `Welcome<span class=" font-extrabold text-[#002D74]"> ${tokenDecoded.name}</span>`;
+    ).innerHTML = `👋🏼Welcome<span class=" font-extrabold text-[#002D74]"> ${tokenDecoded.name}</span>`;
     const res = await axios.get("/admin/expenses", {
       headers: { Authorization: `${token}` },
     });
@@ -142,8 +142,9 @@ async function saveToDb(event) {
   let amountType = document.querySelector(
     'input[name="amountType"]:checked'
   ).value;
-  let amount = event.target.amountInput.value;
-  let description = event.target.descriptionInput.value;
+  
+  let amount = event.target.amount.value;
+  let description = event.target.description.value;
   let category = event.target.category.value;
 
   const obj = {
@@ -185,10 +186,18 @@ function parseJwt(token) {
   return JSON.parse(jsonPayload);
 }
 
+var textEle = document.createElement("span");
+textEle.innerText = " PREMIUM  MEMBER ";
+
+var crownIcon = document.createElement("i");
+crownIcon.classList.add("fas", "fa-crown");
+
+crownIcon.appendChild(textEle);
 //PREMIUM USER MESSAGE
 function premiumUserMsg() {
   document.getElementById("buyPremiumBtn").remove();
-  document.getElementById("memtype").innerText = "PREMIUM MEMBER";
+  var memType = document.getElementById("memType");
+  memType.appendChild(crownIcon);
 }
 
 //SHOW LEADER BOARD
@@ -198,7 +207,8 @@ function showLeaderBoard() {
   let inputBtnElement = document.createElement("button");
   inputBtnElement.type = "button";
   inputBtnElement.id = "leaderBtn";
-  inputBtnElement.innerText = "SHOW LEADERBOARD";
+  inputBtnElement.innerText = "Show LeaderBoard";
+  inputBtnElement.className = "primary-button-show";
 
   let leaderBoardTableVisible = false;
 
@@ -212,24 +222,27 @@ function showLeaderBoard() {
       });
 
       let leaderBoardElement = document.getElementById("addedLeaderBoardList");
-
+      
       const leaderBoardTable = document.getElementById("leaderBoardTable");
 
       if(!leaderBoardTableVisible) {
         leaderBoardTableVisible = true;
-        leaderBoardTable.classList.remove("hidden");
+        document.getElementById("leaderBoardModal").style.display = "block";
+        // leaderBoardTable.classList.remove("hidden");
         leaderBoardElement.innerHTML = "";
 
-        leaderBoardData.data.forEach((leaderDetails) => {
+        leaderBoardData.data.forEach((leaderDetails, index) => {
           leaderBoardElement.innerHTML += `
           <tr>
-          <td>${leaderDetails.name}</td>
-          <td>${leaderDetails.totalExpenses}</td>
+          <td class="number">${index + 1}</td>
+          <td class="name">${leaderDetails.name}</td>
+          <td class="points">${leaderDetails.totalExpenses}</td>
           </tr>`;
         });
       } else {
         leaderBoardTableVisible = false;
-        leaderBoardTable.classList.add("hidden");
+        document.getElementById("leaderBoardModal").style.display = "none";
+        // leaderBoardTable.classList.add("hidden");
       }
     } catch (err) {
       console.log(err);
@@ -239,12 +252,16 @@ function showLeaderBoard() {
   document.getElementById("leaderBoardButtonDiv").appendChild(inputBtnElement);
 }
 
+document.getElementById("closeModalBtn").onclick = function() {
+  document.getElementById("leaderBoardModal").style.display = "none";
+};
 //SHOW PREVIOUS DOWNLOADS
 function showDownloadsHistory() {
   let downloadHisBtn = document.createElement("button");
   downloadHisBtn.type = "button";
   downloadHisBtn.id = "downloadHisBtn";
-  downloadHisBtn.innerText = "DOWNLOADED REPORTS";
+  downloadHisBtn.innerText = "Downloaded Reports";
+  downloadHisBtn.className = "primary-button-show";
 
   let downloadsView = false;
 
@@ -402,7 +419,9 @@ document.getElementById("buyPremiumBtn").addEventListener("click", async functio
   try {
     const token = localStorage.getItem("token");
     const response = await axios.get("/purchase/premiumMembership", {
-      headers: { Authorization: token },
+      headers: {
+         Authorization: token 
+        },
     });
 
     //Payment Handler
@@ -430,6 +449,7 @@ document.getElementById("buyPremiumBtn").addEventListener("click", async functio
           localStorage.setItem("token", res.data.token);
           showLeaderBoard();
           showDownloadsHistory();
+
         } catch (err) {
           console.log(err);
           throw new Error(err);
@@ -444,10 +464,10 @@ document.getElementById("buyPremiumBtn").addEventListener("click", async functio
 
     rzpl.on("payment.failed", async (response) => {
       try {
-        alert("SOMETHING WENT WRONG");
-      } catch (err) {
-        console.group(err);
-        alert(`PAYMENT FAILED DUE TO ${err}`);
+        alert(`Alert: ${response.error.description}`);
+      } catch (error) {
+        console.group(error);
+        alert(`PAYMENT FAILED DUE TO ${error.error.description}`);
       }
     });
   } catch (err) {
